@@ -2,7 +2,7 @@
 各类游戏的中英文本合并
 
 目前支持的游戏：
-Divinity Original Sin 2
+Divinity Original Sin 2\n
 Baldur's Gate 3
 Pathfinder: Wrath of the Righteous (and TableTop Tweaks mod)
 Armello
