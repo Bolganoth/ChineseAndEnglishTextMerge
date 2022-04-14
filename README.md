@@ -2,6 +2,7 @@
 各类游戏的中英文本合并
 
 目前支持的游戏：
+
 Divinity Original Sin 2
 
 Baldur's Gate 3
