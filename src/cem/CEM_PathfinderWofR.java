@@ -18,13 +18,13 @@ public class CEM_PathfinderWofR {
         //可能包含的游戏读取的参数
         String[] modifierParameters = {"{0}", "{1}", "{2}", "{source}", "{target}", "{count}", "{d20}", "{text}", "{description}", "{dc}", "{d100}"};
         // 英文文本文件位置
-        String englishPathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\enGB.json";
+        String englishPathName = System.getProperty("user.dir") + "\\enGB.json";
         // 中文文本文件位置
-        String chinesePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\zhCN.json";
+        String chinesePathName = System.getProperty("user.dir") + "\\zhCN.json";
         //写入的文件位置
-        String writePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\Localization\\zhCN1.json";
+        String writePathName = System.getProperty("user.dir") + "\\zhCN_merged.json";
         // 个人修正文本文件位置，不存在则随意填写
-        String personalRevisePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\pRT.json";
+        String personalRevisePathName = System.getProperty("user.dir") + "\\personalRevisedText.json";
 
         try {
             BufferedReader br = cemTool.buffText(englishPathName);
@@ -112,8 +112,9 @@ public class CEM_PathfinderWofR {
             fileWriter.flush();
             pw.close();
             fileWriter.close();
+            System.out.println("合并完成");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -143,6 +144,6 @@ public class CEM_PathfinderWofR {
         start = System.currentTimeMillis();
         mergeTranslations();
         end = System.currentTimeMillis();
-        System.out.println("合并完成\n运行时间:" + (end - start) + "ms");
+        System.out.println("运行时间:" + (end - start) + "ms");
     }
 }
