@@ -18,13 +18,22 @@ public class CEM_PathfinderWofR {
         //可能包含的游戏读取的参数
         String[] modifierParameters = {"{0}", "{1}", "{2}", "{source}", "{target}", "{count}", "{d20}", "{text}", "{description}", "{dc}", "{d100}"};
         // 英文文本文件位置
-        String englishPathName = System.getProperty("user.dir") + "\\enGB.json";
+        String englishPathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\enGB.json";
         // 中文文本文件位置
-        String chinesePathName = System.getProperty("user.dir") + "\\zhCN.json";
+        String chinesePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\zhCN.json";
         //写入的文件位置
-        String writePathName = System.getProperty("user.dir") + "\\zhCN_merged.json";
+        String writePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\Localization\\zhCN1.json";
         // 个人修正文本文件位置，不存在则随意填写
-        String personalRevisePathName = System.getProperty("user.dir") + "\\personalRevisedText.json";
+        String personalRevisePathName = "E:\\SteamGames\\steamapps\\common\\Pathfinder Second Adventure\\Wrath_Data\\StreamingAssets\\personalRevisedText.json";
+
+//        // 英文文本文件位置
+//        String englishPathName = System.getProperty("user.dir") + "\\enGB.json";
+//        // 中文文本文件位置
+//        String chinesePathName = System.getProperty("user.dir") + "\\zhCN.json";
+//        //写入的文件位置
+//        String writePathName = System.getProperty("user.dir") + "\\zhCN1.json";
+//        // 个人修正文本文件位置，不存在则随意填写
+//        String personalRevisePathName = System.getProperty("user.dir") + "\\pRT.json";
 
         try {
             BufferedReader br = cemTool.buffText(englishPathName);
