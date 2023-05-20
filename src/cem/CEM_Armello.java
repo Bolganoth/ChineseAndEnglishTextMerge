@@ -12,8 +12,8 @@ import java.util.HashMap;
 public class CEM_Armello {
 
     public static void mergeTranslations() {
-        String chineseFile = "F:\\SteamGames\\steamapps\\common\\Armello\\armello_Data\\Export\\TextAsset\\SimplifiedChinese.txt";
-        String englishFile = "F:\\SteamGames\\steamapps\\common\\Armello\\armello_Data\\Export\\TextAsset\\English.txt";
+        String chineseFile = "F:\\SteamGames\\steamapps\\common\\Armello\\armello_Data\\Unity_Assets_Files\\resources\\SimplifiedChinese.txt";
+        String englishFile = "F:\\SteamGames\\steamapps\\common\\Armello\\armello_Data\\Unity_Assets_Files\\resources\\English.txt";
         String outputFile = "F:\\SteamGames\\steamapps\\common\\Armello\\armello_Data\\Unity_Assets_Files\\resources\\merge.txt";
         CEMTool cemt = new CEMTool();
         HashMap<String, String> transMap = new HashMap<>();
