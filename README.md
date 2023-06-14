@@ -13,4 +13,8 @@ Armello
 
 KemonoColiseum
 
+Remember The Flowers
+
+A Hellish Journey
+
 其中CEMTool工具类可方便为其他游戏的中英文本合并制作作辅助
