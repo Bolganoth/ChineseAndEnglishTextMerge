@@ -47,6 +47,36 @@ public class CEMTool {
     }
 
     /**
+     * html标签优化，目前只有b和i
+     */
+    public String chinesePunctuationToEnglish(String mergedText) {
+        mergedText = mergedText.replaceAll("！", "!");
+        mergedText = mergedText.replaceAll("—", "-");
+        mergedText = mergedText.replaceAll("？", "?");
+        return mergedText;
+    }
+
+    /**
+     * html标签优化，目前只有b和i
+     */
+    public String htmlTagsOptimize(String mergedText){
+        mergedText = mergedText.replaceAll("\\{/b}\\(\\{b}", "(");
+        mergedText = mergedText.replaceAll("\\{/i}\\(\\{i}", "(");
+        mergedText = mergedText.replaceAll("\\{/b}\\)", "){/b}");
+        mergedText = mergedText.replaceAll("\\{/i}\\)", "){/i}");
+        return mergedText;
+    }
+
+    /**
+     * 双重括号优化
+     */
+    public String doubleBracketOptimize(String mergedText){
+        mergedText = mergedText.replaceAll("\\(\\(", "(");
+        mergedText = mergedText.replaceAll("\\)\\)", ")");
+        return mergedText;
+    }
+
+    /**
      * 判断文本是否是全Ascii码
      */
     public boolean textIsAllAsciiCode(String text) {
