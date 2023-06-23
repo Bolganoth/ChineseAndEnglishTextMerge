@@ -53,6 +53,7 @@ public class CEMTool {
         mergedText = mergedText.replaceAll("！", "!");
         mergedText = mergedText.replaceAll("—", "-");
         mergedText = mergedText.replaceAll("？", "?");
+        mergedText = mergedText.replaceAll("…", "...");
         return mergedText;
     }
 

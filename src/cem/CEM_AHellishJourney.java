@@ -2,26 +2,24 @@ package cem;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CEM_AHellishJourney {
     public static void mergeTranslations(String chineseFile, String englishFile, String outputFile) {
-        CEMTool cemt = new CEMTool();
+        CEMTool cemTool = new CEMTool();
         HashMap<String, String> transMap = new HashMap<>();
         File f = new File(outputFile);
         try {
             FileWriter fw = new FileWriter(f, true);
             PrintWriter pw = new PrintWriter(fw);
-            BufferedReader englishBR = cemt.buffText(englishFile);
-            BufferedReader chineseBR = cemt.buffText(chineseFile);
+            BufferedReader englishBR = cemTool.buffText(englishFile);
+            BufferedReader chineseBR = cemTool.buffText(chineseFile);
             extractIdAndTranslation(transMap, englishBR);
 
-            String regexId = "^ *translate schinese \\S+_(\\S+): *$";
+            String regexId = "^ *translate schinese (\\S+): *$";
             Pattern patternId = Pattern.compile(regexId);
-//            String regexChineseText = "^.*\"(.*)\" *$";
-            String regexChineseText = "^    (.*)\"(.*)\" *$";
+            String regexChineseText = "^ {4}(.*)\"(.*)\" *$";
             Pattern patternChineseText = Pattern.compile(regexChineseText);
             Matcher matcher;
             String id;
@@ -48,18 +46,18 @@ public class CEM_AHellishJourney {
                     }
                 }
                 assert readLine != null;
-                String chineseText = cemt.chinesePunctuationToEnglish(matcher.group(2)); //中文标点符号英文化
+                String chineseText = cemTool.chinesePunctuationToEnglish(matcher.group(2)); //中文标点符号英文化
                 String merged;
                 String englishText = transMap.get(id); //从英文map中根据id获取英文文本
-                if (chineseText.equals(englishText)) { //中英文本相同则不处理
+                if (chineseText.equals(englishText) || cemTool.textIsAllAsciiCode(chineseText)) { //中英文本相同则不处理
                     pw.println("    " + matcher.group(1) + "\"" + chineseText + "\"");
                     pw.println();
                     pw.println();
                     continue;
                 }
-                merged = "    " + matcher.group(1) + "\"" + cemt.merge(chineseText, englishText) + "\""; //中英文本不同则合并
-                merged = cemt.htmlTagsOptimize(merged); //优化html标签
-                merged = cemt.doubleBracketOptimize(merged); //优化双重括号
+                merged = "    " + matcher.group(1) + "\"" + cemTool.merge(chineseText, englishText) + "\""; //中英文本不同则合并
+                merged = cemTool.htmlTagsOptimize(merged); //优化html标签
+                merged = cemTool.doubleBracketOptimize(merged); //优化双重括号
                 pw.println(merged);
                 pw.println();
                 pw.println();
@@ -86,7 +84,7 @@ public class CEM_AHellishJourney {
                     readLine = chineseBR.readLine();
                     matcher = patternNew.matcher(readLine);
                 }
-                newText = cemt.chinesePunctuationToEnglish(matcher.group(1)); //中文标点符号英文化
+                newText = cemTool.chinesePunctuationToEnglish(matcher.group(1)); //中文标点符号英文化
 
                 //临时加的，目前只看到这一个地方有参数调用，所以目前没有新增个人修正文件，目前看来这游戏的文本含参量不需要
                 if (oldText.equals("Page {}")) {
@@ -98,12 +96,13 @@ public class CEM_AHellishJourney {
                 }
 
 
-                if (oldText.equals(newText)) { //中英重复不处理，不重复合并
+                if (oldText.equals(newText) || cemTool.textIsAllAsciiCode(newText)) { //中英重复不处理，不重复合并
                     merged = "    new \"" + oldText + "\"";
                 } else {
-                    merged = "    new \"" + cemt.merge(newText, oldText) + "\"";
+                    merged = "    new \"" + cemTool.merge(newText, oldText) + "\"";
                 }
-                merged = cemt.doubleBracketOptimize(merged);
+                merged = cemTool.htmlTagsOptimize(merged); //优化html标签
+                merged = cemTool.doubleBracketOptimize(merged);
                 pw.println(merged);
                 pw.println();
                 pw.println();
@@ -121,7 +120,7 @@ public class CEM_AHellishJourney {
         String readLine;
         Pattern pattern;
         Matcher matcher;
-        String regexId = "^ *translate schinese_english \\S+_(\\S+): *$";
+        String regexId = "^ *translate schinese_english (\\S+): *$";
         String regexText = "^ *#.*\"(.*)\" *$";
         String id;
         String text;
@@ -153,23 +152,23 @@ public class CEM_AHellishJourney {
 
     public static void main(String[] args) {
         String chineseFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese\\script.rpy";
-        String englishFile = "D:\\Furry\\A Hellish Journey English Backup\\script.rpy";
+        String englishFile = "D:\\Furry\\A Hellish Journey Backup\\english\\script.rpy";
         String outputFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese_english\\script.rpy";
         mergeTranslations(chineseFile, englishFile, outputFile);
         chineseFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese\\extras.rpy";
-        englishFile = "D:\\Furry\\A Hellish Journey English Backup\\extras.rpy";
+        englishFile = "D:\\Furry\\A Hellish Journey Backup\\english\\extras.rpy";
         outputFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese_english\\extras.rpy";
         mergeTranslations(chineseFile, englishFile, outputFile);
         chineseFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese\\options.rpy";
-        englishFile = "D:\\Furry\\A Hellish Journey English Backup\\options.rpy";
+        englishFile = "D:\\Furry\\A Hellish Journey Backup\\english\\options.rpy";
         outputFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese_english\\options.rpy";
         mergeTranslations(chineseFile, englishFile, outputFile);
         chineseFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese\\screens.rpy";
-        englishFile = "D:\\Furry\\A Hellish Journey English Backup\\screens.rpy";
+        englishFile = "D:\\Furry\\A Hellish Journey Backup\\english\\screens.rpy";
         outputFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese_english\\screens.rpy";
         mergeTranslations(chineseFile, englishFile, outputFile);
         chineseFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese\\common.rpy";
-        englishFile = "D:\\Furry\\A Hellish Journey English Backup\\common.rpy";
+        englishFile = "D:\\Furry\\A Hellish Journey Backup\\english\\common.rpy";
         outputFile = "D:\\Furry\\A Hellish Journey\\game\\tl\\schinese_english\\common.rpy";
         mergeTranslations(chineseFile, englishFile, outputFile);
     }
