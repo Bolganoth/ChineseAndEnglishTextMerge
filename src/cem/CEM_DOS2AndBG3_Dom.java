@@ -8,7 +8,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class CEM_DOS2AndBG3_Dom {
@@ -23,17 +26,17 @@ public class CEM_DOS2AndBG3_Dom {
 
     public static void mergeTranslations() {
         //英文文本文件位置
-        String englishPathName = "E:\\SteamGames\\steamapps\\common\\Divinity Original Sin 2\\DefEd\\Data\\Localization\\Chinese\\Chinese\\Localization\\Chinese\\english.xml";
+        String englishPathName = "F:\\Baldur's Gate 3 Backup\\english.xml";
         //中文文本文件位置
-        String chinesePathName = "E:\\SteamGames\\steamapps\\common\\Divinity Original Sin 2\\DefEd\\Data\\Localization\\Chinese\\Chinese\\Localization\\Chinese\\chinese.xml";
+        String chinesePathName = "F:\\Baldur's Gate 3 Backup\\chinese.xml";
         //写入的文件位置
-        String writePathName = "E:\\SteamGames\\steamapps\\common\\Divinity Original Sin 2\\DefEd\\Data\\Localization\\Chinese\\Chinese\\Localization\\Chinese\\chinese_override.xml";
+        String writePathName = "F:\\Baldur's Gate 3 Backup\\chinese_override.xml";
         //个人修正文本文件位置
         String personalRevisePathName = "D:\\BG3CHNENGMergeChange.xml";
         //是否存在个人修正文本文件
         boolean personalReviseExist = new File(personalRevisePathName).exists();
         //是否是博得之门3的文本[决定了有没有version]
-        boolean isBaldursGate3Text = false;
+        boolean isBaldursGate3Text = true;
         FileWriter fw;
         PrintWriter pw;
         CEMTool cem = new CEMTool();
@@ -63,25 +66,56 @@ public class CEM_DOS2AndBG3_Dom {
             File f = new File(writePathName);
             fw = new FileWriter(f, true);
             pw = new PrintWriter(fw);
-            pw.println("<contentList date=\"14/04/2021 13:04\">"); //开头写入一个<contentList>
+            String englishText;
+            String chineseText;
+            String mergedText;
+            String mergedCoreText;
+            pw.println("<contentList>"); //开头写入一个<contentList>
             for (int i = 0; i < chineseDocumentList.getLength(); i++) { //将中文文本取出与英文文本合并再存入文件
                 Element chineseElement = (Element) chineseDocumentList.item(i); //取出i位置的一行元素
                 String contentuid = chineseElement.getAttribute("contentuid"); //取出当前行的contentuid的属性值
-                String englishText = transMap.get(contentuid); //从英文map中根据uid取出对应的英文文本
-                String mergedText = "	<content contentuid=\"" + contentuid + "\""; //合并的文本
+                englishText = transMap.get(contentuid); //从英文map中根据uid取出对应的英文文本
+                mergedText = "	<content contentuid=\"" + contentuid + "\""; //合并的文本
                 if (isBaldursGate3Text) { //如果是博得3的文本则加上version
                     mergedText += " version=\"" + chineseElement.getAttribute("version") + "\"";
                 }
                 mergedText += ">";
+                if(contentuid.equals("ha07074c0gf103g42ffg8e82gf2e599cf32fd")){
+                    System.out.println();
+                }
                 if (personalReviseExist && reviseMap.get(contentuid) != null) { //如果有个人修正文本则进行修正
-                    mergedText += reviseMap.get(contentuid);
+                    mergedCoreText = reviseMap.get(contentuid);
+                    mergedCoreText = mergedCoreText.replaceAll("&", "&amp;");
+                    mergedCoreText = mergedCoreText.replaceAll("<", "&lt;");
+                    mergedCoreText = mergedCoreText.replaceAll(">", "&gt;");
+                    mergedText += mergedCoreText;
                 } else { //无则将原来的中英文本组合
                     boolean containsModifierParameters = cem.containsModifierParameters(englishText, parameters);
+                    chineseText = chineseElement.getTextContent();
                     if (containsModifierParameters) {
-                        mergedText += cem.dealWithStringsWithParameters(chineseElement.getTextContent(), englishText, parameters, false);
+                        mergedCoreText = cem.dealWithStringsWithParameters(chineseText, englishText, parameters, false);
+                        mergedCoreText = cem.chinesePunctuationToEnglish(mergedCoreText);
+                        if(mergedCoreText.equals("ChnAndEngGrammarOrderFail")){
+                            chineseText = cem.chinesePunctuationToEnglish(chineseText);
+                            mergedCoreText = cem.optimizedMerge(chineseText, englishText);
+                            System.out.println(contentuid);
+                        }
                     } else {
-                        mergedText += chineseElement.getTextContent() + "(" + englishText + ")";
+                        if(englishText == null){
+                            englishText = chineseText;
+                        }
+                        chineseText = cem.chinesePunctuationToEnglish(chineseText);
+                        mergedCoreText = cem.optimizedMerge(chineseText, englishText);
                     }
+                    mergedCoreText = cem.htmlTagsOptimize(mergedCoreText);
+                    mergedCoreText = cem.chinesePunctuationToEnglish(mergedCoreText);
+                    mergedCoreText = mergedCoreText.replaceAll("&", "&amp;");
+                    mergedCoreText = mergedCoreText.replaceAll("<", "&lt;");
+                    mergedCoreText = mergedCoreText.replaceAll(">", "&gt;");
+                    mergedText += mergedCoreText;
+                    mergedText = cem.colonOptimize(mergedText);
+                    mergedText = cem.doubleBracketOptimize(mergedText);
+                    mergedText = cem.htmlTagsOptimize(mergedText);
                 }
                 mergedText += "</content>";
 //                System.out.println(mergedText); //此处解除注释可以输出合并的文本检查
@@ -98,6 +132,7 @@ public class CEM_DOS2AndBG3_Dom {
     }
 
     public static void main(String[] args) {
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         long start, end;
         start = System.currentTimeMillis();
         mergeTranslations();

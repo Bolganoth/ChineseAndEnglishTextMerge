@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * 中英合并工具类，用于辅助中英文本的合并
@@ -27,8 +28,17 @@ public class CEMTool {
         if (translation.equals(originalText)) {
             return translation;
         }
-        if(translation.contains("\\n")){
-            return translation + "\\n(" + originalText + ")";
+        if (translation.contains("\n")) {
+            if (originalText.endsWith("\n")) {
+                return (translation + "(" + originalText + ")").replaceAll("\n\\)", ")");
+            }
+            return translation + "\n(" + originalText + ")";
+        }
+        if (translation.contains("<br>")) {
+            if (originalText.endsWith("<br>")) {
+                return (translation + "(" + originalText + ")").replaceAll("<br>\\)", ")");
+            }
+            return translation + "<br>(" + originalText + ")";
         }
         return merge(translation, originalText);
     }
@@ -54,28 +64,60 @@ public class CEMTool {
         mergedText = mergedText.replaceAll("—", "-");
         mergedText = mergedText.replaceAll("？", "?");
         mergedText = mergedText.replaceAll("…", "...");
+        mergedText = mergedText.replaceAll("（", "(");
+        mergedText = mergedText.replaceAll("）", ")");
         return mergedText;
     }
 
     /**
      * html标签优化，目前只有b和i
      */
-    public String htmlTagsOptimize(String mergedText){
+    public String htmlTagsOptimize(String mergedText) {
         mergedText = mergedText.replaceAll("\\{/b}\\(\\{b}", "(");
         mergedText = mergedText.replaceAll("\\{/i}\\(\\{i}", "(");
         mergedText = mergedText.replaceAll("\\{/b}\\)", "){/b}");
         mergedText = mergedText.replaceAll("\\{/i}\\)", "){/i}");
+        mergedText = mergedText.replaceAll("</b>\\(<b>", "(");
+        mergedText = mergedText.replaceAll("</i>\\(<i>", "(");
+        mergedText = mergedText.replaceAll("</b>\\)", ")</b>");
+        mergedText = mergedText.replaceAll("</i>\\)", ")</i>");
+        mergedText = mergedText.replaceAll("<br>\\(<br>\\)", "<br>");
+        mergedText = mergedText.replaceAll("<br><br>\\(", "<br>(");
+        mergedText = mergedText.replaceAll("<br><br>\\(", "<br>(");
+        while (mergedText.endsWith("<br>)")) {
+            mergedText = mergedText.replaceAll("<br>\\)", ")");
+        }
         return mergedText;
     }
 
     /**
      * 双重括号优化
      */
-    public String doubleBracketOptimize(String mergedText){
-        mergedText = mergedText.replaceAll("\\(\\(", "(");
-        mergedText = mergedText.replaceAll("\\)\\)", ")");
-        return mergedText;
+    public String doubleBracketOptimize(String mergedText) {
+        String mergedTextNew = mergedText.replaceAll("\\(\\(", "(");
+        mergedTextNew = mergedTextNew.replaceAll("\\)\\)", ")");
+        if(!bracketMatched(mergedTextNew)){
+            return mergedText;
+        }
+        return mergedTextNew;
     }
+
+
+    private boolean bracketMatched(String strs) {
+        Stack<Character> s = new Stack<>();
+        for (char c : strs.toCharArray()) {
+            if (c == '(')
+                s.push(')');
+            else if (c == '[')
+                s.push(']');
+            else if (c == '{')
+                s.push('}');
+            else if (s.isEmpty() || c != s.pop())
+                return false;
+        }
+        return s.isEmpty();
+    }
+
 
     /**
      * 判断文本是否是全Ascii码
@@ -107,6 +149,9 @@ public class CEMTool {
     public boolean containsModifierParameters(String text, String[] InputParameters) {
         boolean contains = false;
         for (String modifierParameter : InputParameters) {
+            if (text == null) {
+                return false;
+            }
             if (text.contains(modifierParameter)) {
                 contains = true;
                 break;
