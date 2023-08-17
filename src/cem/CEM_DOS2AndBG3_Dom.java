@@ -32,7 +32,7 @@ public class CEM_DOS2AndBG3_Dom {
         //写入的文件位置
         String writePathName = "F:\\Baldur's Gate 3 Backup\\chinese_override.xml";
         //个人修正文本文件位置
-        String personalRevisePathName = "D:\\BG3CHNENGMergeChange.xml";
+        String personalRevisePathName = "src\\data\\BG3CHNENGMergeChange.xml";
         //是否存在个人修正文本文件
         boolean personalReviseExist = new File(personalRevisePathName).exists();
         //是否是博得之门3的文本[决定了有没有version]
@@ -80,9 +80,9 @@ public class CEM_DOS2AndBG3_Dom {
                     mergedText += " version=\"" + chineseElement.getAttribute("version") + "\"";
                 }
                 mergedText += ">";
-                if(contentuid.equals("ha07074c0gf103g42ffg8e82gf2e599cf32fd")){
-                    System.out.println();
-                }
+//                if(contentuid.equals("ha07074c0gf103g42ffg8e82gf2e599cf32fd")){
+//                    System.out.println();
+//                }
                 if (personalReviseExist && reviseMap.get(contentuid) != null) { //如果有个人修正文本则进行修正
                     mergedCoreText = reviseMap.get(contentuid);
                     mergedCoreText = mergedCoreText.replaceAll("&", "&amp;");
