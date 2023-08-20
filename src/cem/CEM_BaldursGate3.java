@@ -10,13 +10,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
-public class CEM_DOS2AndBG3_Dom {
+public class CEM_BaldursGate3 {
     /*
-     * larian框架游戏中英文本合并,适用于神界原罪2和博得之门3
+     * larian框架游戏中英文本合并,适用于博得之门3
+     * 尽量不要用于神界原罪2
      * 需要准备中英文本，可选修正文本
      * 相对于上一个版本的代码，此处读取xml采用了dom的方式
      * 并且开头结尾的contentList标签不需手动删除添加
@@ -35,8 +35,6 @@ public class CEM_DOS2AndBG3_Dom {
         String personalRevisePathName = "src\\data\\BG3CHNENGMergeChange.xml";
         //是否存在个人修正文本文件
         boolean personalReviseExist = new File(personalRevisePathName).exists();
-        //是否是博得之门3的文本[决定了有没有version]
-        boolean isBaldursGate3Text = true;
         FileWriter fw;
         PrintWriter pw;
         CEMTool cem = new CEMTool();
@@ -76,18 +74,11 @@ public class CEM_DOS2AndBG3_Dom {
                 String contentuid = chineseElement.getAttribute("contentuid"); //取出当前行的contentuid的属性值
                 englishText = transMap.get(contentuid); //从英文map中根据uid取出对应的英文文本
                 mergedText = "	<content contentuid=\"" + contentuid + "\""; //合并的文本
-                if (isBaldursGate3Text) { //如果是博得3的文本则加上version
-                    mergedText += " version=\"" + chineseElement.getAttribute("version") + "\"";
-                }
+                mergedText += " version=\"" + chineseElement.getAttribute("version") + "\"";
                 mergedText += ">";
-//                if(contentuid.equals("ha07074c0gf103g42ffg8e82gf2e599cf32fd")){
-//                    System.out.println();
-//                }
                 if (personalReviseExist && reviseMap.get(contentuid) != null) { //如果有个人修正文本则进行修正
                     mergedCoreText = reviseMap.get(contentuid);
-                    mergedCoreText = mergedCoreText.replaceAll("&", "&amp;");
-                    mergedCoreText = mergedCoreText.replaceAll("<", "&lt;");
-                    mergedCoreText = mergedCoreText.replaceAll(">", "&gt;");
+                    mergedCoreText = htmlCharChange(mergedCoreText);
                     mergedText += mergedCoreText;
                 } else { //无则将原来的中英文本组合
                     boolean containsModifierParameters = cem.containsModifierParameters(englishText, parameters);
@@ -95,13 +86,13 @@ public class CEM_DOS2AndBG3_Dom {
                     if (containsModifierParameters) {
                         mergedCoreText = cem.dealWithStringsWithParameters(chineseText, englishText, parameters, false);
                         mergedCoreText = cem.chinesePunctuationToEnglish(mergedCoreText);
-                        if(mergedCoreText.equals("ChnAndEngGrammarOrderFail")){
+                        if (mergedCoreText.equals("ChnAndEngGrammarOrderFail")) {
                             chineseText = cem.chinesePunctuationToEnglish(chineseText);
                             mergedCoreText = cem.optimizedMerge(chineseText, englishText);
                             System.out.println(contentuid);
                         }
                     } else {
-                        if(englishText == null){
+                        if (englishText == null) {
                             englishText = chineseText;
                         }
                         chineseText = cem.chinesePunctuationToEnglish(chineseText);
@@ -109,9 +100,7 @@ public class CEM_DOS2AndBG3_Dom {
                     }
                     mergedCoreText = cem.htmlTagsOptimize(mergedCoreText);
                     mergedCoreText = cem.chinesePunctuationToEnglish(mergedCoreText);
-                    mergedCoreText = mergedCoreText.replaceAll("&", "&amp;");
-                    mergedCoreText = mergedCoreText.replaceAll("<", "&lt;");
-                    mergedCoreText = mergedCoreText.replaceAll(">", "&gt;");
+                    mergedCoreText = htmlCharChange(mergedCoreText);
                     mergedText += mergedCoreText;
                     mergedText = cem.colonOptimize(mergedText);
                     mergedText = cem.doubleBracketOptimize(mergedText);
@@ -129,6 +118,13 @@ public class CEM_DOS2AndBG3_Dom {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String htmlCharChange(String text) {
+        text = text.replaceAll("&", "&amp;");
+        text = text.replaceAll("<", "&lt;");
+        text = text.replaceAll(">", "&gt;");
+        return text;
     }
 
     public static void main(String[] args) {

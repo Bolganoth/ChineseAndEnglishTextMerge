@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-public class CEM_DOS2AndBG3 {
+public class CEM_DivinityOriginalSin2 {
 	/*
-	 * larian框架游戏中英文本合并,适用于神界原罪2和博得之门3
-	 * 对于博得之门3省略了version，但不影响使用
+	 * larian框架游戏中英文本合并,适用于神界原罪2
+	 * 如果用于合并博得之门3，因为省略了version，建议不要使用
 	 * 需要准备中英文本，可选修正文本
 	 * 中英文本需预处理删除开头的<contentList>或<contentList date="14/10/2020 14:10">和结尾的</contentList>
 	 * 待处理完成后再手动加上

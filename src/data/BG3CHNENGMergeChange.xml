@@ -207,6 +207,7 @@ For further information on Larian Studios' privacy standard, please refer to our
 	<content contentuid="h7f2fb117g1f87g4849ga4b8gd864068066b8" version="1">生命值已增加(Health Increased)</content>
 	<content contentuid="hd518a942g5964g4f7eg9497g2dd243dab44c" version="4">F -- L O S S &lt;br&gt;- P A I N &lt;br&gt;A L L S &lt;br&gt;L -- R I S E&lt;br&gt;</content>
 	<content contentuid="h91cd6282ge529g45cfgb147g1ed8b5630516" version="5">A D Y -- O &lt;br&gt;E S S -- O F &lt;br&gt;G H T -- F &lt;br&gt;S H A L&lt;br&gt;</content>
+	<content contentuid="h0904ee57gf0f5g4b41gb315g5361697c43cc" version="5">O U R -- L &lt;br&gt;M I S T R &lt;br&gt;W H E N -- N I &lt;br&gt;T H O R M -&lt;br&gt;</content>
 	<content contentuid="h1579d774gdbcdg4a97gb3fage409138d104d" version="1">STR</content>
 	<content contentuid="h8d7356d7g4c37g41e4gb8a2gef3459e12b97" version="1">DEX</content>
 	<content contentuid="h20676a9ag9216g47dbgba3ag82bd734cfd53" version="1">CON</content>
@@ -214,4 +215,19 @@ For further information on Larian Studios' privacy standard, please refer to our
 	<content contentuid="h2e9f1067g2dceg4640g8816gc6394e9f0303" version="1">WIS</content>
 	<content contentuid="ha2fc9b3dg3305g404eg9256gf25a06d0b2aa" version="1">CHA</content>
 	<content contentuid="h2c7413d7gc4dbg44d5ga1bcge70d24592b53" version="1">在战斗过程中，你还可以在先攻追踪条中点击敌人的头像来瞄准对方。(In combat you can also target the enemies by clicking their portraits in the Initiative Tracker.)</content>
+	<content contentuid="h4bf5b366g76a0g424dgaa14g37124b33b746" version="1">调配所有素材(Extract All Ingredients) [1]</content>
+	<content contentuid="h0145c64fgaae0g4aa7g8817gc1ac83dc65c7" version="2">灵魂充能(Souls Charges): 6</content>
+	<content contentuid="h23e6c9b8g9ce1g4626gb255g2c3f6ae0a1f5" version="2">灵魂充能(Souls Charges): 5</content>
+	<content contentuid="h40dc0c43g7fa3g4c0ega9d7g8f4798c86f50" version="3">灵魂充能(Souls Charges): 3</content>
+	<content contentuid="h4107b35egdaf3g42adgb024gc5b6d85746d9" version="4">灵魂充能(Soul Charges: 1</content>
+	<content contentuid="h54decf7bg67c7g40c3ga11bg4567ca6720c8" version="3">灵魂充能(Souls Charges): 2</content>
+	<content contentuid="h5b14ed3eg1f3dg4500gb50bg09584ec7fb11" version="3">灵魂充能(Souls Charges): 4</content>
+	<content contentuid="h975b25bbg7ce2g4837g812eg5321c6324f25" version="2">灵魂充能(Souls Charges): 8</content>
+	<content contentuid="hc47f04cbgee35g48adgb7c8g1a214cf26b54" version="2">灵魂充能(Souls Charges): 7</content>
+	<content contentuid="hf8024f48g3db8g4491g9436gb23d3d13d94e" version="2">灵魂充能(Souls Charges): 9</content>
+	<content contentuid="h97b0bd51gc29fg46d4gaf85ged7a0b1518ff" version="1">或(or)</content>
+	<content contentuid="hd2d05509gaea8g4d37g9457gf3e226b4baa1" version="1">存档时间(Save Date)</content>
+	<content contentuid="hf86950e1g7605g42c7gb789gd894ff687b1b" version="1">全部萃取(Extract All) [1]</content>
+	<content contentuid="h566a32b1g1e58g4df0g9368g5b7a37f2d40d" version="1">是否前往营地?这将结束本日的冒险。<br><br>你的<LSTag Tooltip="CampSupplies">营地补给</LSTag>不足。现在进行<LSTag Tooltip="LongRest">长休</LSTag>只能将你的<LSTag Tooltip="HitPoints">生命值</LSTag>和<LSTag Tooltip="SpellSlot">法术位</LSTag>恢复到最大值的一半，且你将无法恢复<LSTag Tooltip="ShortRest">短休次数</LSTag>。
+(Do you want to go to end the day? <br><br>You don't have enough <LSTag Tooltip="CampSupplies">camp supplies</LSTag>. Taking a <LSTag Tooltip="LongRest">Long Rest</LSTag> now will only restore your <LSTag Tooltip="HitPoints">hit points</LSTag> and <LSTag Tooltip="SpellSlot">spell slots</LSTag> up to half their maximum, and you won't regain any <LSTag Tooltip="ShortRest">Short Rests</LSTag>.)</content>
 </contentList>
